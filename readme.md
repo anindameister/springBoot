@@ -543,5 +543,25 @@ insert into alien values(101,"Aninda")
 
 ![The track](https://github.com/anindameister/WebDevelopmentClass/blob/main/snaps/10.PNG)
 
+## scopes in spring framework
+- singleton(for core)<-- even if you dont create an object in a different class, SpringFramework would give you the object. This creation of objects before hand is called singleton design pattern. And also it would create an object only once. Recall Telusko at 32:00
+- prototype(for core)<-- if you dont ask for objects, it wont be created. Mention prototype in SpringFramework to call this. Java core app gives this feature by default.
+- request(for web)
+- session(for web)
+
+- the below shows that by default java follows prototype, so it creates object as many times, the user wants. Below is a proof
+```
+constructor is a method which creates an object.
+constructor is a method which creates an object.
+Shirt is off
+Shirt is off
+Shirt is on*********
+black
+X
+null
+```
+- the above is from Alex Lee's constructors. 
+
+
 
 

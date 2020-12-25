@@ -6,8 +6,8 @@ public class This {
     int b;
 
     public static void setData(int a, int b){
-        a=a;
-        b=b;
+        a=a+1;
+        b=b+2;
 
     }
 
@@ -19,6 +19,7 @@ public class This {
         This c=new This();
         c.setData(4,3);
         System.out.println(c.a);
+        System.out.println(c.b);
 
 
     }

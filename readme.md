@@ -524,6 +524,7 @@ insert into alien values(101,"Aninda")
 
 # SpringBoot Navin Reddy
 
+- Many Java EE features and one of them is EJB
 - EJB
 
 ## Spring Features

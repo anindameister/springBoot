@@ -20,12 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="931f40e9-036f-4964-b06c-0837f8299b46" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gettersAndSetters.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../out/production/ConstructorsConstructsObjects/Construction/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../out/production/ConstructorsConstructsObjects/Construction/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/../readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/Construction/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/Construction/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../understandingThisKeyword/out/production/understandingThisKeyword/ThisKeyword/This.class" beforeDir="false" afterPath="$PROJECT_DIR$/../understandingThisKeyword/out/production/understandingThisKeyword/ThisKeyword/This.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../understandingThisKeyword/src/ThisKeyword/This.java" beforeDir="false" afterPath="$PROJECT_DIR$/../understandingThisKeyword/src/ThisKeyword/This.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,17 +86,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Account" />
@@ -116,6 +102,7 @@
       <option name="presentableId" value="Default" />
       <updated>1607253381300</updated>
       <workItem from="1607253382365" duration="4393000" />
+      <workItem from="1608890532150" duration="732000" />
     </task>
     <servers />
   </component>
@@ -132,6 +119,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1607255593997">

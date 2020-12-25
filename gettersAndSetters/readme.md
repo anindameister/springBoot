@@ -176,43 +176,14 @@ public class This {
 2. Moving on, it just seems that we created a function named setData which accepts two integers. Once, it receives the two parameters, it just assigns it to two integers named a,b which are already initialised and then prints it.
 3. To note, this section is about **this** keyword which has not been used.
 
-- we continued without initially declaring the two integers and viola! it prints again.
+#### removed the previous and in order to check the old stuff go for 2:09pm on 25th december and get the history from github
 
-```
-package ThisKeyword;
+- from the below code, execution on 25th dec,2020; I just learnt that I can create an object and call it's attributes but not get that executed. It gives an error. Got to have a consolidated idea on the fact that, **if we have call an attribute of an object then if that can be done directly like the way we call method or not**
 
-public class This {
+![error2callAttributeAfterObjectCreation](https://github.com/anindameister/springBoot/blob/main/snaps/1.PNG)
 
-//    int a;
-//    int b;
+- In the below program, we'll see that, an attribute of an object when called just gives the initial value, because at this point, java is confused if it needs to send the initial values of the attribute or something else.
 
-    public static void setData(int a, int b){
-        a=a;
-        b=b;
-        System.out.println(a);
-        System.out.println(b);
-    }
-
-    public static void main(String[]args){
-
-        setData(4,3);
-
-        //dont forget that we use the class and not the method directly from a class without mentioning the class. We can't create a human object without specifying that it belows to mamals class
-        This c=new This();
-        c.setData(4,3);
-
-
-    }
-}
-```
-- the output
-```
-4
-3
-4
-3
-```
-- Now, we uncommented the initailised variable and we get the exact result as above, below is the code and above is the result.
 ```
 package ThisKeyword;
 
@@ -220,61 +191,226 @@ public class This {
 
     int a;
     int b;
-
     public static void setData(int a, int b){
+
         a=a;
         b=b;
         System.out.println(a);
         System.out.println(b);
-    }
-
-    public static void main(String[]args){
-
-        setData(4,3);
-
-        //dont forget that we use the class and not the method directly from a class without mentioning the class. We can't create a human object without specifying that it belows to mamals class
-        This c=new This();
-        c.setData(4,3);
-
-
-    }
-}
-```
-- in the below, we made a couple of changes
-1. we removed the System.out.println from the setData method and used the same within the main method.
-2. So continuing, the above point, we made System.out.println available within the main method.
-- now, an object has methods and attributes/properties, say whatever for attributes. These attributes are basically variables. So human object has attributes like age,height, weight and methods like walking,talking
-- so an object that has been created can use a method of the class. Eg:Human object can perform(call) the methods like talking,producingMilk,notLayingEggs of it's mamal class. Similarly Human object also has age,height,weight,pinnah(ears). So human object should be able to use these attributes. Some human objects cannot, so computerTechnology helps them and that way every human is supposed to have access to the attributes of mamal class.
-- so now, we would attempt to call attribute of the object created,c.
-```
-package ThisKeyword;
-
-public class This {
-
-    int a;
-    int b;
-
-    public static void setData(int a, int b){
-        a=a;
-        b=b;
 
     }
 
     public static void main(String[]args){
 
-        setData(4,3);
+        setData(1,2);
 
-        //dont forget that we use the class and not the method directly from a class without mentioning the class. We can't create a human object without specifying that it belows to mamals class
-        This c=new This();
-        c.setData(4,3);
-        System.out.println(c.a);
-
+        This object=new This();
+        System.out.println(object.a);
+        System.out.println(object.b);
+      
 
     }
 }
 ```
-- the output
+- output
 ```
+1
+2
+0
 0
 ```
-- so the output basically doesn't give anything. The reason is that the program is confused in regards to bringing in 4 or .... to be checked out in the video.
+- so what is happening is that the play button in intellij instialises the main method, which initially calls the function **setData** and assigns the parameters to 1 and 2 and we have 1,2 in the output. Again, when we create an object **object** of class **This**, then it takes the attributes a,b and doesn't assign the value 1,2; because no values have actually been assigned to the attributes actually. Confusing java, as said by Alex Lee, is not being taken into account as of yet because using **setData** as a functions gives 1,2 and when using **setData** as method it doesn't give the values 1,2 and instead gives 0,0 because values have never been truly assigned to class **This**'s attributes a,b.
+
+- let's check the below code and it's output
+
+```
+package ThisKeyword;
+
+public class This {
+
+    int a;
+    int b;
+    public static void setData(int a, int b){
+
+        a=a;
+        b=b;
+        System.out.println(a);
+        System.out.println(b);
+
+    }
+
+    public static void main(String[]args){
+
+        setData(1,2);
+        This object=new This();
+        object.setData(3,4);
+        System.out.println(object.a);
+        System.out.println(object.b);
+
+
+    }
+}
+```
+- output
+```
+1
+2
+3
+4
+0
+0
+```
+- in this way, **setData(1,2)**, setData has been used as function and passed in two parameters, like a regular function of any language is used.
+**setData(3,4)**, this way we are calling the method setData and assigning values as 3,4 and getting that printed out. Thus calling method is exactly been used as calling function. **System.out.println(object.a);** , calling the attribute is not giving result because java is confused if it needs to output the initial attribute value or acquired attribute value. Eg: Baby default "nature" attribute is "simple". Life, calls the Baby and assigns it's "nature" attribute to "complicated".
+
+- introuducing "this" keyword in the code
+
+![introuducing "this" keyword in the code](https://github.com/anindameister/springBoot/blob/main/snaps/2.PNG)
+
+- **static** keyword and **this** keyword cannot be used together and hence removing the static keyword and found out the below.
+
+![setData cannot be used as function anymore](https://github.com/anindameister/springBoot/blob/main/snaps/3.PNG)
+
+- setData cannot be used as function anymore. Recollect Python. We cannot use "this" keyword in Python's function. This "this" keyword comes in oops. Thus, we will remove the function calling now.
+
+- below is snap of the clean and correct code.
+
+![correct usage of "this" keyword](https://github.com/anindameister/springBoot/blob/main/snaps/4.PNG)
+
+- **so "this" keyword is used to change the initial parameter value of a class to a desired value.**
+
+#### wordkAround for not using **this**
+
+```
+package ThisKeyword;
+
+public class This {
+
+    int c;
+    int d;
+    public void setData(int a, int b){
+
+        c=a;
+        d=b;
+        System.out.println(a);
+        System.out.println(b);
+
+    }
+
+    public static void main(String[]args){
+
+
+        This object=new This();
+        object.setData(3,4);
+        System.out.println(object.c);
+        System.out.println(object.d);
+
+    }
+}
+```
+
+- output
+```
+3
+4
+3
+4
+```
+- Again a mammal class has attributes like legs, not tentacles etc. So this mammal class has method like movingWay which uses the legs parameters. Or if we are trying to use "tentacles" parameter then within the method, we have to say that the initial class' attribute legs has been now changed to tentacles. Later, we create an object of this class and call the method and pass it attribute values
+
+```
+package ThisKeyword;
+
+public class Mammal {
+
+    int legs;
+
+    public void usingMovingPart(int tentacles){
+
+        legs=tentacles;
+        System.out.println(legs);
+
+    }
+
+    public static void main(String[]args){
+
+
+        Mammal human=new Mammal();
+        human.usingMovingPart(9);
+
+
+    }
+}
+```
+- output
+```
+9
+```
+- not using **this** or **workAround**
+
+```
+package ThisKeyword;
+
+public class thisMammal {
+
+    int legs;
+
+    public void usingMovingPart(int legs){
+
+        legs=legs;
+        System.out.println(legs);
+
+    }
+
+    public static void main(String[]args){
+
+
+        thisMammal human=new thisMammal();
+        human.usingMovingPart(9);
+        System.out.println(human.legs);
+
+
+    }
+}
+```
+
+- output
+
+```
+9
+0
+```
+- **we get the 9 by setting the parameters used by the method. We get a 0, because with "human.legs" within "System.out.println(human.legs)" we are trying to use the original attribute of the class which is 0. Thus an object can change the attribute of the class to a different value, as seen in the below program.**
+
+```
+package ThisKeyword;
+
+public class thisMammal {
+
+    int legs;
+
+    public void usingMovingPart(int legs){
+
+        this.legs=legs;
+        System.out.println(legs);
+
+    }
+
+    public static void main(String[]args){
+
+
+        thisMammal human=new thisMammal();
+        human.usingMovingPart(9);
+        System.out.println(human.legs);
+
+
+    }
+}
+
+```
+- output
+```
+9
+9
+```
+- in the above, we changed nothing but just introduced the term **this**

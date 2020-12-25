@@ -414,3 +414,102 @@ public class thisMammal {
 9
 ```
 - in the above, we changed nothing but just introduced the term **this**
+
+# toString()
+
+- let's look at this
+- creating a student class within a package named "LearningTogether"
+
+```
+package LearningTogether;
+
+public class Student {
+
+    String UniversityRollNumber;
+    String name;
+}
+```
+- creating another class called CodingIsFun within the same package "LearningTogether" and also involving a main method within this class. Calling the student class' attributes and assigning values to it, by creating an object named s1. Later, attempting to bring everything of the object s1.
+
+```
+package LearningTogether;
+
+public class CodingIsFun {
+
+    public static void main(String[]args){
+        Student s1=new Student();
+        s1.UniversityRollNumber="1GS07EE001";
+        s1.name="Aamira Farzeen";
+
+        System.out.println(s1);
+    }
+}
+```
+- output
+```
+LearningTogether.Student@5f184fc6
+```
+- so in the above output, we see that, we get the memory location of the object. But we dont want that. We dont want to see a human object's location. We want to see, what are the attributes of this human object. Let's attempt to see that.
+- So, there's no one external who could just see the attributes of this human object, unless the human object gets the mammal class' **toString** method. So, once that's declared, we see the attributes of this human object in our class.
+
+```
+package LearningTogether;
+
+public class Student {
+
+    String UniversityRollNumber;
+    String name;
+
+    public String toString(){
+        return UniversityRollNumber + name;
+    }
+}
+```
+- output from the main class
+```
+1GS07EE001Aamira Farzeen
+```
+- the concept ends here.
+- Let's try to use the complicated Alex Lee way, and it is important to get into the complication because we just learnt the user of **this** method and also read about constructors.
+
+#### Alex Lee
+
+- we create a constructor and pass in two parameters. Within this constructor, we use the **this** keyword to say that whatever parameters are there is equal to the original class' parameters.
+- Next, we keep the **toString** method like before
+```
+package LearningTogether;
+
+public class Student {
+
+    String UniversityRollNumber;
+    String name;
+
+    Student(String UniversityRollNumber, String name){
+        this.UniversityRollNumber=UniversityRollNumber;
+        this.name=name;
+
+    }
+
+    public String toString(){
+        return UniversityRollNumber + name;
+    }
+}
+```
+- main class, the name of the class is so, because it contains the main method.
+
+```
+package LearningTogether;
+
+public class CodingIsFun {
+
+    public static void main(String[]args){
+        Student s2=new Student("1GS07EE002","Amith Kumar");
+
+        System.out.println(s2);
+    }
+}
+```
+- output
+```
+1GS07EE002Amith Kumar
+```

@@ -137,13 +137,6 @@ public class Main {
         System.out.println(s.size);
         System.out.println(t.color);
 
-
-
-
-
-
-
-
     }
 }
 ```

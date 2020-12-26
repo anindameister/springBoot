@@ -946,4 +946,47 @@ public class DemoApplication {
 
 #### web app using Spring Boot contd..
 
+- so, we have a .jsp file user "src/main/webapp/home.jsp".. We have a controller in place, which is capable of serving the Client's request. Now, the Client's Request is associated to "http://localhost:8080/home".. Now, the server needs to serve the request coming from "http://localhost:8080/home" and the way it does that is by **@RequestMapping("/home")**.. This annotation is used above the method of the Controller class, which is supposed to serve the Client's request coming from "localhost:8080/home".. 
+- **addingJspDependency** because Spring Boot doesn't support jsp by default
 
+```
+// https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jasper
+    compile group: 'org.apache.tomcat', name: 'tomcat-jasper', version: '9.0.39'
+```
+- the above version is based on the **embedded Tomcat version**
+- with the above dependency being added, Spring Boot now knows, **how to convert jsp into servelets**
+
+#### calling HTML
+- I would now attempt to serve a html thing. It works perfectly. I followed the same way. 
+- **ResponseBody**, we got the appropriate response by typing in the below code.
+
+- we would end this section, by giving the codes given in the "Controller" class.
+```
+package com.emse.spring.faircorpagain.telusko.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+public class AlienController {
+
+    @RequestMapping("/home")
+    public String home(){
+        return "home.jsp";
+    }
+
+    @RequestMapping("/anindaHtml")
+    public String html(){
+        return "index.html";
+    }
+
+    @RequestMapping("/ResponseBodyIntroduced")
+    @ResponseBody
+    public String ResponseBodyIntroduced(){
+        return "ResponseBodyIntroduced";
+    }
+
+}
+```
+## Web App using Spring boot Application Properties File

@@ -787,13 +787,6 @@ public class Laptop {
         this.brand = brand;
     }
 
-    @Override
-    public String toString() {
-        return "Laptop{" +
-                "lid=" + lid +
-                ", brand='" + brand + '\'' +
-                '}';
-    }
 
     public void compile(){
         System.out.println("compiling");
@@ -804,6 +797,7 @@ public class Laptop {
 ```
     private Laptop laptop;
 ```
+- we created getters&setters in order to access the private object "laptop" from private class "Laptop". **It seems that we're explicitly saying that, let's make this "Laptop" class private.**
 - we called a method from laptop class within show method
 ```
 public void show(){
@@ -812,3 +806,99 @@ public void show(){
         laptop.compile();
     }
 ```
+- Now, after all this we got an error, saying **NullPointerException**, and this is because we didn't create an object like we do in regular times like doing the below
+```
+Laptop laptop=new Laptop()
+```
+- but this is SpringFramework, so we just declare "@Component" on top of the Laptop class.
+
+
+![Laptop.class' object](https://github.com/anindameister/springBoot/blob/main/snaps/8.PNG)
+
+- **note** before getting into **Autowired**, I just called the Laptop.class's object, basic java style and it worked. Again, we have to rememer that the sole purpose of bringing in Spring Boot is to get **loose coupling**
+```
+25Dec2020at2337hrs
+25Dec2020at2337hrs
+MerryChristmasOn25ThDecember,2020
+compiling
+MerryChristmasOn25ThDecember,2020
+compiling
+```
+- we will get the same output by introducing "@Autowired"
+- yes, by introducing "@Autowired" we have done the below and got the exact above output. **Note that, no .toString() used in Laptop.class**
+
+![@Autowired](https://github.com/anindameister/springBoot/blob/main/snaps/9.PNG)
+
+-**By default, the "@Autowired" searches by the class name, we would attempt to make "@Autowired" search by object name below**
+
+- add **@Qualifier("lap1")** in the Alien.class and **@Component("lap1")** in laptop.class
+
+- Laptop.class code remains same as top. Alien.class code, changes a bit in terms of the code above, posting the same below
+
+- Alien.class
+```
+package com.emse.spring.faircorpagain.telusko;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope(value="prototype")
+public class Alien {
+
+    private int aid;
+    private String aname;
+    private String tech;
+    @Autowired
+    @Qualifier("lap1")
+    private Laptop laptop;
+
+
+
+    public Alien() {
+        System.out.println("25Dec2020at2337hrs");
+    }
+
+    public int getAid() {
+        return aid;
+    }
+
+    public void setAid(int aid) {
+        this.aid = aid;
+    }
+
+    public String getAname() {
+        return aname;
+    }
+
+    public void setAname(String aname) {
+        this.aname = aname;
+    }
+
+    public String getTech() {
+        return tech;
+    }
+
+    public void setTech(String tech) {
+        this.tech = tech;
+    }
+
+    public Laptop getLaptop() {        return laptop;    }
+
+    public void setLaptop(Laptop laptop) {        this.laptop = laptop;    }
+
+    public void show(){
+
+        System.out.println("MerryChristmasOn25ThDecember,2020");
+        laptop.compile();
+    }
+
+}
+```
+- and "DemoApplication.java" code remains the same
+
+## web app using Spring Boot
+
+

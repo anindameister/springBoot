@@ -956,6 +956,58 @@ public class DemoApplication {
 - the above version is based on the **embedded Tomcat version**
 - with the above dependency being added, Spring Boot now knows, **how to convert jsp into servelets**
 
+- current JSP code
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>What are the annotations, we have learnt till now?</h1>
+<ol><li>
+    @Component
+    <ul><li>This tells that, I authorise this class to be used as bean</li></ul>
+</li>
+    <li>@Scope(value="prototype")
+    </li>
+    <ul><li>To be noted, the default type is Singleton for Spring Boot which means that an instance of the class would be given to the other class, even without calling it</li>
+    <li>with @Scope(value="prototype") , the class needs to call for the bean explicitly</li></ul>
+    <li>@Autowired</li>
+    <ul><li>a class' method to be called within another class' method</li>
+    <li>Eg:Laptop class called by Alien.class and this Alien.class being called by DemoApplication.java</li>
+    </ul>
+    <li> @Autowired @Qualifier("lap1")</li>
+    <ul><li>@Autowired is used to connect one class to another class on the basis of class name</li>
+    <li>@Autowired @Qualifier("lap1") is used to connect a class to another class, by the other class' object name by using things like @Component("lap1")
+    </li>
+    <li>@Controller</li>
+        <ul><li>When client request a server to serve the webPage, then this Client searches for the controller in the server. To create this Controller, the server just needs a class and this class should have a method. This class needs to be annotated by @Controller</li>
+        </ul>
+    </ul>
+    <li>@RestController</li>
+    <ul><li>Same as @Controller but @RestController would be used for creating Restful Services.</li></ul>
+
+</ol>
+
+<form action="addAlien">
+    <input type="text" name="aid"><br>
+    <input type="text" name="aname"><br>
+    <input type="submit"><br>
+</form>
+
+
+
+</body>
+</html>
+```
+- output 
+
+
+![jsp basic page](https://github.com/anindameister/springBoot/blob/main/snaps/13.PNG)
+
 #### calling HTML
 - I would now attempt to serve a html thing. It works perfectly. I followed the same way. 
 - **ResponseBody**, we got the appropriate response by typing in the below code.
@@ -989,7 +1041,11 @@ public class AlienController {
 
 }
 ```
-- introduced to basic web page serving to client request by Spring Boot's controller. Also learnt the way to serve the nonDefault JSP page by adding Tomcat Jasper dependency. Served Html page. Got introduced to @RequestMapping annotation, which would be used more in REST
+
+![html page](https://github.com/anindameister/springBoot/blob/main/snaps/12.PNG)
+
+
+- introduced to basic web page serving to client request by Spring Boot's controller. Also learnt the way to serve the nonDefault JSP page by adding Tomcat Jasper dependency. Served Html page. Got introduced to @ResponseBody annotation, which would be used more in REST
 
 ## Web App using Spring boot Application Properties File
 
@@ -1000,6 +1056,40 @@ public class AlienController {
 spring.mvc.view.prefix=/jspPages/
 spring.mvc.view.suffix=.jsp
 ```
+
+![manualPageServingConfigurationJsp](https://github.com/anindameister/springBoot/blob/main/snaps/11.PNG)
+
 2. We would now try to do the same for serving html pages. **Couldn't do that, getting error to be checked later. Not the same way like serving .jsp**
 
-## Web App using Spring Boot Accepting Client Data
+## Web App using Spring Boot Accepting Client Data 1:00:13
+
+## 1:08:51 Web App using Spring Boot ModelAndView
+- 1:15:39
+
+```
+@RequestMapping("/learningMV")
+    public ModelAndView learningMV(@RequestParam("name") String myName){
+        ModelAndView mv=new ModelAndView();
+        mv.addObject("name",myName);
+
+        mv.setViewName("learningMV");
+        return mv;
+
+    }
+```
+- **@RequestMapping("/learningMV")**
+:- the default path
+- **ModelAndView mv=new ModelAndView();** :- we are creating **mv** object of ModelAndView class
+- **return mv;** we are returning an object of type mv, and hence
+- **public ModelAndView learningMV(@RequestParam("name") String myName)** in here, we are mentioning "ModelAndView" because this is basically the return type. So accessModifier returnType className(attribute1=matchingTheKeyNameWithTheIncomingKeyName attribute2=storingTheValueOfKeyvaluePairInAString)
+- **mv.addObject("name",myName);**:- we are calling the **addObject** method of ModelAndView class and sending the data to the view whose name is mentioned in the below line
+- **mv.setViewName("learningMV");**
+
+- output at
+```
+http://localhost:8080/learningMV?name=aninda
+```
+
+![ModelAndView](https://github.com/anindameister/springBoot/blob/main/snaps/14.PNG)
+
+- http://localhost:8080/learningMV?age=aninda would not work and give an error because it doesnt match **@RequestParam("name")**

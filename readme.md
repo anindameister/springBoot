@@ -1089,7 +1089,59 @@ spring.mvc.view.suffix=.jsp
 ```
 http://localhost:8080/learningMV?name=aninda
 ```
+- btw, it has got to be "aninda", "Aninda" is being changed to lowerCase
 
 ![ModelAndView](https://github.com/anindameister/springBoot/blob/main/snaps/14.PNG)
 
 - http://localhost:8080/learningMV?age=aninda would not work and give an error because it doesnt match **@RequestParam("name")**
+
+#### Recap:
+- server is accepting request from with the help of **@RequestMapping("/learningMV")**
+- server is having ModelAndView, where Model is the data and View is the viewName
+- Data is accepted from **@RequestParam("name")** and stored in **String myName**
+- ModelAndView is sending the data with it's method **mv.addObject("name",myName);** to the viewName **mv.setViewName("learningMV")** and finally returning **mv**, data and view
+- ModelAndView is the special class powered by Spring Boot
+
+## Web App using Spring Boot Model Object
+
+- Accepting a lot of values from the client. This could be only done, if the server can give this scope to the client. Previously, it was just giving the scope of 1, which was through "@RequestParam("name")".. "name" had to match with the client's request parameter. 
+- This time, we are giving the scope to the client through **public ModelAndView learningMV4Multiple(Maulik maulik){**
+- so we have created a class called **Maulik** and in here, we are creating an object. This object contains the attributes, and all those attributes become the new scope of the client's request.
+- **mv.addObject("maulikObject",maulik);** , this is the required keyValue pair
+- **maulikObject** is termed as **attributeName** by Spring Boot
+- it seems that we cannot do **${maulik.memberOccupation}** , so we are doing **${maulikObject.memberName}** instead, because comeon we cannot use the java objects within JSP
+
+- jsp
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+Welcome to the world of Spring Boot
+You, yes you, ${maulikObject.memberName} could be of age ${maulikObject.memberAge} but since your ${maulikObject.memberOccupation}, your occupation supports a lot of mental work so you would be able to cope up with Spring Boot
+</body>
+</html>
+```
+- Maulik.class has 3 private variables and getters&Setters for them
+- the below is added for the AlienController.java
+```
+@RequestMapping("/learningMV4Multiple")
+    public ModelAndView learningMV4Multiple(Maulik maulik){
+        ModelAndView mv=new ModelAndView();
+        mv.addObject("maulikObject",maulik);
+
+        mv.setViewName("learningMV4Multiple");
+        return mv;
+
+    }
+```
+- output
+
+
+![ModelAndView's request accepting from client, scope, has been increased](https://github.com/anindameister/springBoot/blob/main/snaps/15.PNG)
+
+- **Note:- Recall the error of localHost, that came up due to silly mistake of not spelling "local", right.. The error should be Whitepage... and not localHost error which might mean that the internet cable has been unplugged**
+

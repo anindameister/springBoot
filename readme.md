@@ -833,7 +833,11 @@ compiling
 
 - add **@Qualifier("lap1")** in the Alien.class and **@Component("lap1")** in laptop.class
 
-- Laptop.class code remains same as top. Alien.class code, changes a bit in terms of the code above, posting the same below
+- Laptop.class code remains same as top with a very small difference.
+```
+@Component("lap1")
+```
+- Alien.class code, changes a bit in terms of the code above, posting the same below
 
 - Alien.class
 ```
@@ -900,5 +904,46 @@ public class Alien {
 - and "DemoApplication.java" code remains the same
 
 ## web app using Spring Boot
+
+- Choose **web** from that website or from the intellij
+- **Reactive web** has not been chosen now, and this has been introduced in 2.0
+- fixed the "DemoApplication.java" to the defaults, by just commenting the notNecessaryNow parts.
+```
+package com.emse.spring.faircorpagain.telusko;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+
+@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+
+        SpringApplication.run(DemoApplication.class, args);
+
+    }
+}
+```
+- **src/main/webapp/home.jsp**
+- basic skeleton of a .jsp page is as below, which would work
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+```
+- **localhost:8080/home** whenever, client/browser has got this url, it should call for home.jsp.
+- So the .jsp page in here is our view. Client would request the server. The request goes to the **controller** and the "controller" would call the home.jsp ..Right now, we dont have a controller. Question is, how do we create a controller in Spring. We just create a **controller class** and give it any name.
+- so when we go to "localhost:8080/home", we are supposed to get that page. It doesn't have anything, because nobody is accepting the client's request as of right now. Someone should accept the client's request and who would do that, it is the "Controller".
+- So where were we? We attempted to create a class. This class should have a method. And in order to have this class work as a controller, we need to annotate this class with **@Controller**.. Just a note, for REST services, we need **RestController**.
+
+![Annotations learnt till now](https://github.com/anindameister/springBoot/blob/main/snaps/10.PNG)
+
+#### web app using Spring Boot contd..
 
 

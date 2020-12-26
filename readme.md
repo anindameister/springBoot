@@ -318,7 +318,7 @@ public class WelcomeService {
 - just above we saw that by changing the class named NameService, we have disturbed the className WelcomeService; which was just using the method named getName of NameService class.
 - so we can well realise that for simple usage of method from other class, due to tight-coupling, can cause so much of hassle.
 - to break the hassle, we have a looseCoupling concept and this concept can be implemented by Invesion of Control.
-
+*****
 ### Interface
 - interface is a list of variables and methods.
 - we just list them out. Again, interface is just a list of variables and methods
@@ -453,7 +453,7 @@ public class NewBornBabyController {
     }
 }
 ```
-
+***********
 ## jsp
 
 - we create a folder under main, and name it "webapp", could be different, dont forget to check the telusko video if this doesnt work
@@ -521,7 +521,7 @@ insert into alien values(101,'Aninda')
 ```
 insert into alien values(101,"Aninda")
 ```
-
+*******
 # SpringBoot Navin Reddy
 
 - Many Java EE features and one of them is EJB

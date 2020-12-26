@@ -989,4 +989,17 @@ public class AlienController {
 
 }
 ```
+- introduced to basic web page serving to client request by Spring Boot's controller. Also learnt the way to serve the nonDefault JSP page by adding Tomcat Jasper dependency. Served Html page. Got introduced to @RequestMapping annotation, which would be used more in REST
+
 ## Web App using Spring boot Application Properties File
+
+- we would attempt to ** manuseparate the extension and location of the page to be served to the client,ally, without using the default of Spring Boot for .jsp within "src/main/webapp/home.jsp" and for .html "src/main/resources/static/index.html"**
+
+1. The reason, we are doing this is because the public would know from where the .jsp pages are coming by default. So, we'd using the default and just introduce a new folder with certain name. We would give the same in the **application.properties**. The look of the application.properties at this point is as below,
+```
+spring.mvc.view.prefix=/jspPages/
+spring.mvc.view.suffix=.jsp
+```
+2. We would now try to do the same for serving html pages. **Couldn't do that, getting error to be checked later. Not the same way like serving .jsp**
+
+## Web App using Spring Boot Accepting Client Data

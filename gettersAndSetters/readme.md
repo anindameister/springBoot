@@ -513,3 +513,104 @@ public class CodingIsFun {
 ```
 1GS07EE002Amith Kumar
 ```
+
+## replicating SpringBoot learning into core-Java or let's say people's way BlueJava
+- I have got to find out the difference between core&BlueJava
+
+- Step 1: got Alien class with private attributes created and calling getters&setters to make those private attributes/**Variables** accessible. Finally got a method createdd within Alien.class to be able to call it from the main class. Did that successfully.
+- Step 2: created a "Laptop" class in the exact way.
+- Step 3: we would create a "l1" object for "laptop" class within Alien.class .. So, we instantiated the object, exactly like we should do and did nothing additional.
+
+- laptop
+```
+package ExperiementingInOrder2LearnAutowired;
+
+public class laptop {
+    private int lid;
+    private String brand;
+
+    public int getLid() {
+        return lid;
+    }
+
+    public void setLid(int lid) {
+        this.lid = lid;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+
+    public void compile(){
+        System.out.println("creatingLaptopClassExactlyLikeAlienClass");
+
+    }
+}
+```
+- Alien.class
+```
+package ExperiementingInOrder2LearnAutowired;
+
+public class Alien {
+    private int aid;
+    private String aname;
+    private String tech;
+    laptop l1=new laptop();
+
+
+
+    public int getAid() {
+        return aid;
+    }
+
+    public void setAid(int aid) {
+        this.aid = aid;
+    }
+
+    public String getAname() {
+        return aname;
+    }
+
+    public void setAname(String aname) {
+        this.aname = aname;
+    }
+
+    public String getTech() {
+        return tech;
+    }
+
+    public void setTech(String tech) {
+        this.tech = tech;
+    }
+
+
+
+    public void show(){
+        System.out.println("replicatingSpringBootLearningProcessIntoCoreJava");
+        l1.compile();
+    }
+}
+```
+- Main.class
+```
+package ExperiementingInOrder2LearnAutowired;
+
+public class Main {
+    public static void main(String[]args){
+        Alien alien=new Alien();
+        alien.show();
+
+    }
+}
+```
+- output
+```
+replicatingSpringBootLearningProcessIntoCoreJava
+creatingLaptopClassExactlyLikeAlienClass
+```
+

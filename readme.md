@@ -563,6 +563,252 @@ null
 ```
 - the above is from Alex Lee's constructors. 
 
+# 25th December,2020.
+
+- we can manually create an object of a different "Alien" class in my current entry class **DemoApplication.java** , but dependency injection says, hey! developer, you dont need to manually create objects. Focus on the logic and we'll create the objects for you.
+- current status of "DemoApplication.java" is as below
+
+```
+package com.emse.spring.faircorpagain.telusko;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+
+@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+
+        SpringApplication.run(DemoApplication.class, args);
+
+    }
+}
+```
+- we are now attempting to check the **run** method of the **SpringApplication** object. We do **Alt+F7** . If we do that, we'll be able to see the "run" method in the **SpringApplication.java**.. We would see that, "run" method gives an object of **ConfigurableApplicationContext**.
+- Now, we would attempt to create an object of the type "ConfigurableApplicationContext" from the package **import org.springframework.context.ConfigurableApplicationContext;**. This package requests, being imported. 
+- so, we will be creating an object, of name "context" of type "ConfigurableApplicationContext", using the "run" method of **"SpringApplication" class**.
+```
+ConfigurableApplicationContext object=SpringApplication.run(DemoApplication.class, args);
+```
+- Now, we would try to call a method of the object, "context". I get options by intellij. I see **getBean**, which wants a parameter. This parameter is the className, whose bean(object) the programmer wants.
+
+```
+Alien alienObject=context.getBean(Alien.class);
+```
+- so let's see the complete program
+```
+package com.emse.spring.faircorpagain.telusko;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+
+@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+
+        ConfigurableApplicationContext context=SpringApplication.run(DemoApplication.class, args);
+
+            Alien alienObject=context.getBean(Alien.class);
+            alienObject.show();
+
+    }
+}
+
+```
+- we get an **error**
+```
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.emse.spring.faircorpagain.telusko.Alien' available
+```
+- so basically this error message said that there's **no qualifying bean** 
+- with the below line, we have initialised a Spring container
+```
+        ConfigurableApplicationContext context=SpringApplication.run(DemoApplication.class, args);
+```
+- but there's no bean inside the Spring container, that we just created
+
+![empty Spring Container](https://github.com/anindameister/springBoot/blob/main/snaps/6.PNG)
+
+- The empty Spring Container has two scopes which is for core apps. They are **Singleton** and **prototypes**. The other ones mentioned above, are for web applications.
+
+- with the below line, we say that give me a bean/object of type "alien". According to the above error message, there's no qualifying bean, as in, we never told Spring Application explicitly that we need bean/object of Alien class. 
+- So, we never told Spring Application that create a bean of Alien class, but we are calling a bean. 
+- **It is same as, not creating a baby of Maulik class, but always calling for the baby to help/assist/work for my coding.**
+
+- by doing the below, we specify, this is a class of which I want an object.
+
+```
+@Component
+```
+- with the above keyword, below becomes the current situation.
+- so, we have not changed the above code at all, we just added **@Component** in the Alien class and we have the output as 
+```
+MerryChristmasOn25ThDecember,2020
+```
+- in the Alien.class, all we did is give three private attributes and associate getters&settes for the same. Then, we created a method, so that have a reason to create an object in the different class. Finally, we have put across the "@Component" keyword to tell Spring Application that this is the class, whose object/bean we give permission to be created by Spring Application.
+
+- program Alien.class
+```
+package com.emse.spring.faircorpagain.telusko;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class Alien {
+
+    private int aid;
+    private String aname;
+    private String tech;
 
 
 
+    public int getAid() {
+        return aid;
+    }
+
+    public void setAid(int aid) {
+        this.aid = aid;
+    }
+
+    public String getAname() {
+        return aname;
+    }
+
+    public void setAname(String aname) {
+        this.aname = aname;
+    }
+
+    public String getTech() {
+        return tech;
+    }
+
+    public void setTech(String tech) {
+        this.tech = tech;
+    }
+
+    public void show(){
+        System.out.println("MerryChristmasOn25ThDecember,2020");
+    }
+
+}
+```
+- we would now, attempt to create another object from the class Alien. In order to do that, we will do the DemoApplication
+
+```            
+Alien alienObject=context.getBean(Alien.class);
+
+        Alien alienObjects=context.getBean(Alien.class);
+                    alienObject.show();
+
+            alienObjects.show();
+```
+- output
+```
+MerryChristmasOn25ThDecember,2020
+MerryChristmasOn25ThDecember,2020
+```
+- Constructors are God. So let's try see the number of times, God/constructor comes into existence. So, we'll remove the above stuff to create multiple object. We would explicitly mention a constructor inside the Alien.class, to check the number of times it comes into existence in the DemoApplication
+- we introduced the below in Alien.class 
+```
+    public Alien() {
+        System.out.println("25Dec2020at2337hrs");
+    }
+```
+- and got output
+```
+25Dec2020at2337hrs
+MerryChristmasOn25ThDecember,2020
+```
+- so now, with the below code in DemoApplication, 
+```
+Alien alienObject=context.getBean(Alien.class);
+
+        Alien alienObjects=context.getBean(Alien.class);
+                    alienObject.show();
+
+            alienObjects.show();
+```
+- output
+```
+25Dec2020at2337hrs
+MerryChristmasOn25ThDecember,2020
+MerryChristmasOn25ThDecember,2020
+```
+- so,object was created once, but method was called twice. Basicaly, we got **one instance** because of the singleton design pattern followed by SpringFramework.
+
+- after commenting out the above code, we get the below output
+```
+25Dec2020at2337hrs
+```
+- This default object creation happens because **SpringFramework follows the concept of Singleton design pattern** which means that it would give you the object pre-hand, as in, we dont even have to wait for the object creation.
+- **Note** this would have not happened, i.e. getting the object created pre-hand without the constructor, explicitly being defined in the Alien.class.. Just checked the same, and there's **no error and no output**
+
+### prototype
+
+```
+import org.springframework.context.annotation.Scope;
+@Component
+@Scope(value="prototype")
+```
+- now the instance of the class would be created twice with the exact last code. Check out the output
+```
+25Dec2020at2337hrs
+25Dec2020at2337hrs
+MerryChristmasOn25ThDecember,2020
+MerryChristmasOn25ThDecember,2020
+```
+- **Note**, we wont get a bean by default, we will get objects created with the keyword **getBean** . Number of times, object would be created would be based on the number of times "getBean" is called.
+- So, the above code, being commented out in the DemoApplication, we won't be getting the object created even once due to the implimentation of "prototype".
+
+### introducing another class and later bring in **AutoWired**
+
+- we'll get a laptop class which would contain private attributes and in order to access these private attributes, we'll bring in getters&setters. Finally, we would try to bring in an object of this laptop class within the Alien.class. Let's proceed by getting a laptop class
+
+```
+package com.emse.spring.faircorpagain.telusko;
+
+public class Laptop {
+
+    private int lid;
+    private String brand;
+
+    public int getLid() {
+        return lid;
+    }
+
+    public void setLid(int lid) {
+        this.lid = lid;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    @Override
+    public String toString() {
+        return "Laptop{" +
+                "lid=" + lid +
+                ", brand='" + brand + '\'' +
+                '}';
+    }
+
+    public void compile(){
+        System.out.println("compiling");
+    }
+}
+```
+- so we created an object,"laptop" of class "Laptop" in the Alien.class
+```
+    private Laptop laptop;
+```
+- we called a method from laptop class within show method
+```
+public void show(){
+        
+        System.out.println("MerryChristmasOn25ThDecember,2020");
+        laptop.compile();
+    }
+```

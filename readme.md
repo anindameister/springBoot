@@ -1145,3 +1145,126 @@ You, yes you, ${maulikObject.memberName} could be of age ${maulikObject.memberAg
 
 - **Note:- Recall the error of localHost, that came up due to silly mistake of not spelling "local", right.. The error should be Whitepage... and not localHost error which might mean that the internet cable has been unplugged**
 
+## Spring Boot JPA MVC H2 Example
+
+- web
+- **jpa**
+- **h2**
+
+- some kind of bug is coming up and hence getting, the below, got to check the **.jsp.jsp bug**
+![jsp.jsp](https://github.com/anindameister/springBoot/blob/main/snaps/16.PNG)
+
+- Moving on, by putting the .jsp file in the default directory and commenting out the application.properties part
+- below are the 3 settings that needs to be put in the application.properties , in order to get started with h2 database
+```
+spring.h2.console.enabled=true
+spring.datasource.platform=h2
+spring.datasource.url=jdbc:h2:mem:aninda
+```
+- **http://localhost:8080/h2-console** to access the console
+- click **Test connection** and we're supposed to get a success message
+- we'll click on connect and proceed.
+
+#### JPA
+- **@Entity** table name
+- **@Id** table data
+- controller/AlienController.java
+```
+@RequestMapping("/learningDatabase")
+    public String learningDatabase(){
+
+        return "learningH2.jsp";
+    }
+```
+- model/Alien.java
+```
+package com.emse.spring.faircorpagain.telusko.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class Alien {
+    @Id
+    private int aid;
+    private String aname;
+
+    public int getAid() {
+        return aid;
+    }
+
+    public void setAid(int aid) {
+        this.aid = aid;
+    }
+
+    public String getAname() {
+        return aname;
+    }
+
+    public void setAname(String aname) {
+        this.aname = aname;
+    }
+
+    @Override
+    public String toString() {
+        return "Alien{" +
+                "aid=" + aid +
+                ", aname='" + aname + '\'' +
+                '}';
+    }
+}
+```
+- we have now got a table in the h2 named **ALIEN**
+- we attempted to check the data availability by 
+```
+select * from alien
+```
+- we found none, because with "@Id" we were able to set the fields of the table, let's consider that we're able to give the **column names** to our table. Now, we have got to insert data.
+
+- in order to enter data into the database, we would attempt to create a separate data file under **resources/data.sql**
+- Now, **h2 is an in-memory database**, so if we insert data from h2, then everytime we re-launch it then we'll lose the data..That's why we are keeping our data in a separate file.
+
+- database
+![database console](https://github.com/anindameister/springBoot/blob/main/snaps/17.PNG)
+
+- data.sql
+```
+insert into alien values(101,'Aninda')
+insert into alien values(102,'Arunava')
+```
+#### Now, we want the client to enter data
+- let's look at the .jsp file
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="addAlien">
+    <input type="text" name="aid"><br>
+    <input type="text" name="aname"><br>
+    <input type="submit"><br>
+</form>
+</body>
+</html>
+```
+- we have **form action="addAlien"** but the server is not yet entertaining this action called "addAlien". Let server address this client's action "addAlien"
+- so the server would accept request from http://localhost:8080/addAlien
+and for this we have got @RequestMapping("/addAlien")
+- so whenever the server would receive the request from "/addAlien", it would **first send the request to the controller class which has been annotated by @Controller** and then within the controller class, find out who is accepting the request from client which would be gotten by @RequestMapping("/addAlien") and the corresponding method would handle this request. 
+- The request is coming with some data and this would be handled by **public String addingAlien(Alien alien)**. Let's understand that Alien.class in here is responsible to create the database table along with assigning the table column value. So now, **alien** object would be able to get the data coming from the client in accordance to the parameters mentioned in the Alien class. Now, the question might come up that, how is a newly created object, becomes capable of getting the data so that's exactly the beauty of Spring Boot.
+
+```
+
+@RequestMapping("/addAlien")
+public String addingAlien(Alien alien){
+
+    return "learningH2.jsp";
+}
+````
+
+- Now, server is capable to accept request, accept the data coming with the request, and now the server needs to store the data in the database.
+
+- **Why do we use interface ? It is used to achieve total abstraction. Since java does not support multiple inheritance in case of class, but by using interface it can achieve multiple inheritance . ... The reason is, abstract classes may contain non-final variables, whereas variables in interface are final, public and static**

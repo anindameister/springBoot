@@ -29,3 +29,5 @@ public class toCreateAbstractClassObject extends anAbstractClass(){
 
 - **Conclusion 7:57pm IST on 27Dec2020** Java class cannot inherit multiple class. So we use interface class to inherit multiple classes. Interface class can only inherit abstract classes. **Note:- it can also be said that Java class can inherit from abstract classes but not from multiple abstract classes**
 
+- **Conclusion 8:05pm IST on 27Dec2020** "intro 2 non-access modifier's abstract class,attributes,methodsand interface can inherits from multiple abstract classes whereas a java class can also inherit from abstract classes but not multiple abstract classes. Abstract class has no method body and this method body is provided by the subclass."
+

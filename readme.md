@@ -1254,7 +1254,7 @@ insert into alien values(102,'Arunava')
 - so the server would accept request from http://localhost:8080/addAlien
 and for this we have got @RequestMapping("/addAlien")
 - so whenever the server would receive the request from "/addAlien", it would **first send the request to the controller class which has been annotated by @Controller** and then within the controller class, find out who is accepting the request from client which would be gotten by @RequestMapping("/addAlien") and the corresponding method would handle this request. 
-- The request is coming with some data and this would be handled by **public String addingAlien(Alien alien)**. Let's understand that Alien.class in here is responsible to create the database table along with assigning the table column value. So now, **alien** object would be able to get the data coming from the client in accordance to the parameters mentioned in the Alien class. Now, the question might come up that, how is a newly created object, becomes capable of getting the data so that's exactly the beauty of Spring Boot.
+- The request is coming with some data and this would be handled by **public String addingAlien(Alien alien)**. Let's understand that Alien.class in here is responsible to create the database table along with assigning the table column value. So now, **alien** object would be able to get the data coming from the client in accordance to the parameters mentioned in the Alien class. Now, the question might come up that, how is a newly created object, becomes capable of getting the data so that's exactly the beauty of Spring Boot. Spring Boot is giving the capability to the newly created object to get the data. 
 
 ```
 
@@ -1267,4 +1267,75 @@ public String addingAlien(Alien alien){
 
 - Now, server is capable to accept request, accept the data coming with the request, and now the server needs to store the data in the database.
 
-- **Why do we use interface ? It is used to achieve total abstraction. Since java does not support multiple inheritance in case of class, but by using interface it can achieve multiple inheritance . ... The reason is, abstract classes may contain non-final variables, whereas variables in interface are final, public and static**
+- https://github.com/anindameister/springBoot/tree/main/InterfaceLearningForSpringBoot
+
+- for saving the data in the database that is **update** part from **CRUD:-Create, read, update and delete**
+
+- we would attempt to get this power of performing CRUD operation and we just need to tell Spring Boot, **gimme the power to perform CRUD operation**.. In response, Spring Boot says who needs the CRUD power. We say, CRUD power is required by Java class. But Java class wont be able to handle the powerful CRUD, it doesn't have the capability to handle the multiple inheritances that would come along with CRUD. So, we say, fine! Java class dont have the capability to get CRUD power because of the multiple inheritances coming along but Java Interface has the power to handle multiple inheritances provided they are all abstract classes. Thus, we now have to create an **Interface which would extend the CrudRepository and we have to just pass the parameter where we have to mention which class has the proven power to create and set the database column names. The answer is the Alien class. So we pass in the first parameter as Alien. The second parameter is that what kind of value would CRUD need to handle? The answer is primitiveValues ie Integer and that becomes the second parameter**
+```
+package com.emse.spring.faircorpagain.telusko.dao;
+
+import com.emse.spring.faircorpagain.telusko.model.Alien;
+import org.springframework.data.repository.CrudRepository;
+
+public interface AlienRepo extends CrudRepository<Alien, Integer> {
+}
+```
+- Now we have this in the CrudRepository. We can access that with ALT+F7
+```
+public interface CrudRepository<T, ID> extends Repository<T, ID> {
+```
+- CrudRepository.java contains all the stuff which helps in performing CRUD operations
+
+- Before CRUD coming into picture, our situation was this as below.
+- Now, server is capable to accept request, accept the data coming with the request, and now the server needs to store the data in the database.
+- So basically our Controller who is gonna accept the incoming requests from client along with data needs to store the data. In order to store data, this Controller class is gonna use an object of the class, which gives the power to store data.
+
+```
+AlienRepo alienRepo;
+```
+- Ok, done. Now, controller class has an object. So, let's just loosely couple them with the help of "@Autowired"
+
+![@Autowired](https://github.com/anindameister/springBoot/blob/main/snaps/20.PNG)
+
+- Okay, now Controller has the object. 
+- Time to use the object.
+- BTW, why is Controller class trying to use the object??
+- Controller class is trying to use the object to save data and let's do that
+
+```
+        alienRepo.save(alien);
+```
+- so we have this as below
+```
+    @Autowired
+    AlienRepo alienRepo;
+
+    @RequestMapping("/addAlien")
+    public String addingAlien(Alien alien){
+
+        alienRepo.save(alien);
+
+        return "learningH2.jsp";
+    }
+```
+- .jsp status
+```
+<form action="addAlien">
+    <input type="text" name="aid"><br>
+    <input type="text" name="aname"><br>
+    <input type="submit"><br>
+</form>
+```
+
+![Sending data from the jsp page](https://github.com/anindameister/springBoot/blob/main/snaps/21.PNG)
+
+- data from .jsp goes as below because there is no REST and it is very dangerous for sending passwords without implementing REST
+
+![jsp sending data without REST,not REST, recall talking to Maxim](https://github.com/anindameister/springBoot/blob/main/snaps/21.PNG)
+
+- below is the database status
+
+![h2 database status](https://github.com/anindameister/springBoot/blob/main/snaps/22.PNG)
+
+

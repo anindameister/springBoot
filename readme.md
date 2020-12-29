@@ -1588,7 +1588,7 @@ from Alien where tech=?1 order by aname
 ```
 - So, the method that we are creating accepts a parameter aid with the help of @RequestParam int aid.. We have an observation that the acceptance is either through single handling or object handling. **Single handling is done by  @RequestParam**.. **BUT in here, we are accepting the data directly from the api/url. Moreover is @RequestParam is associated to ModelAndView. Here, since we are accepting from the url directly, we are using @PathVariable("aid") int aid**
 - Moving on, we are attempting to return a string but **return alienRepo.findById(aid)** is giving an error because **findById** method is an iterable.
-**iterable is an object that can be looped over. e.g. list , string , tuple etc.**
+**iterable is an object that can be looped over. e.g. list , string , tuple etc.:-According to simple Google search**
 So we are transforming the return to string
 - current code status
 ```
@@ -1623,3 +1623,71 @@ So we are transforming the return to string
 - output
 
 ![getting all aliens](https://github.com/anindameister/springBoot/blob/main/snaps/30.PNG)
+
+## Spring Boot Data JPA MVC H2 REST Example Part 5
+
+- The above output comes up as client display.
+- In order to exchange data, we would need Json data. So a website sends json data on GET requests. Then we POST json. SO json is important. Now, we were using CrudRepository by applying an interface class to perform CRUD operations. **CrudRepository uses iterables**. This time we would use interface to extend **JpaRepository** which in turn would use CrudRepository along with JpaRepository features. Moreover **JpaRepository returns list. Such listJavaObjects are transformed to json by Jackson which is available in the gradle for Spring Boot**
+
+-Getting to the code
+1. Created an interface which extends JpaRepository
+```
+package com.emse.spring.faircorpagain.telusko.dao;
+
+import com.emse.spring.faircorpagain.telusko.model.Alien;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+
+public interface AlienRepoJpaCrud extends JpaRepository<Alien, Integer> {
+
+}
+```
+2. created an object of this interface in our Controller class
+```
+AlienRepoJpaCrud alienRepoJpaCrud;
+```
+3. **Connected the above interface with  this Controller class through @Autowired, photo details below; I was getting error because of not mentioning this**
+
+![@Autowired](https://github.com/anindameister/springBoot/blob/main/snaps/31.PNG)
+
+4. complete code
+```
+@Autowired
+    AlienRepoJpaCrud alienRepoJpaCrud;
+
+
+
+    @RequestMapping("/getAlienJpa/{aid}")
+    @ResponseBody
+    public Optional<Alien> gettingAlienFromRESTJpaRepo(@PathVariable("aid") int aid){
+
+        return alienRepoJpaCrud.findById(aid);
+    }
+
+    @RequestMapping("/getAliensJpa")
+    @ResponseBody
+    public List<Alien> gettingAllAliensFromRESTJpaRepo(){
+
+        return alienRepoJpaCrud.findAll();
+    }
+```
+5. Below is used to say that if we dont get anything, then dont break
+```
+Optional<Alien>
+```
+6. alienRepoJpaCrud which extends JpaRepository would return list and hence the below is mentioned. Again **Jackson** is used to convert from list to json
+```
+List<Alien>
+```
+7. output
+
+![return all aliens in json](https://github.com/anindameister/springBoot/blob/main/snaps/32.PNG)
+
+- output 2
+
+
+![return individual alien in json](https://github.com/anindameister/springBoot/blob/main/snaps/33.PNG)
+
+## Postman Spring Boot Data Jpa MVC H2 REST Example Part 6

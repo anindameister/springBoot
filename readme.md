@@ -1332,10 +1332,235 @@ AlienRepo alienRepo;
 
 - data from .jsp goes as below because there is no REST and it is very dangerous for sending passwords without implementing REST
 
-![jsp sending data without REST,not REST, recall talking to Maxim](https://github.com/anindameister/springBoot/blob/main/snaps/21.PNG)
+![jsp sending data without REST,not REST, recall talking to Maxim](https://github.com/anindameister/springBoot/blob/main/snaps/22.PNG)
 
 - below is the database status
 
-![h2 database status](https://github.com/anindameister/springBoot/blob/main/snaps/22.PNG)
+![h2 database status](https://github.com/anindameister/springBoot/blob/main/snaps/23.PNG)
+
+## Spring Boot JPA MVC H2 Example Part 2
+
+- why do we need a service layer?
+- in enterprise application, at times, data is not coming from database, instead coming from network or the input provided by the user. Thus we need to process something and that processing is to be done in the service layer.
+- In case, the data is coming from Repository then the service layer would interact with the repository, so that's how we build our application. 
+- But in order to have an introductory understanding of the Spring Data JPA we went directly with the alienRepo.
+- Now, we have a alienRepo and we are able to add data to the repository. Question, is that, what if we wanna fetch the data
+
+- we start with the .jsp
+```
+<hr>
+<form action="getAlien">
+    <input type="text" name="aid"><br>
+
+    <input type="submit"><br>
+</form>
+```
+- so from .jsp we have created a pseudo method called "getAlien". So the above part would accept an "aid" and when the user hits submit, it should fetch the data from the database based on the aid.
+- Now the Controller, receives the client's request named "getAlien" and accepts the same through this,
+```
+    @RequestMapping("/getAlien")
+```
+- the Controller, also receives 1 data, aid, by the following
+```
+    public String gettingAlien(@RequestParam int aid){
+```
+- **@RequestParam** is used to fetch data from client
+- okay, the controller just got the data, now what! Now, we have to show the data in form of a .jsp page .. Jsp page construction is in process.
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+${alien}
+
+</body>
+</html>
+```
+- in the controller, controller has accepted the data coming with client request. The data is an int "aid"
+- Now, we would try to call the method of alienRepo. This is an object of the interface which extends the CrudRepository
+- In case we dont find the id then we will send a "null" value.
+- let's recollect this, **alienRepo.save(alien);**
+- so we were getting the method to save, so for sure we are getting the method to find
+
+```
+        alienRepo.findById(aid).orElse(null);
+```
+- Again, we have below, as of right now
+```
+    @RequestMapping("/getAlien")
+    public ModelAndView gettingAlien(@RequestParam int aid){
+```
+- with the above, controller gets the data
+- recollecting again, we were saving "alien" before in here "alienRepo.save(alien);"
+- we would try to store the data again into "alien"
+- so we have searched for the data with **alienRepo.findById(aid).orElse(null);** and now we'll store the data within alien like below. And just fyi, alien is an object of class Alien. Just like we mention String a="Aninda Maulik" similar to this is below
+```
+Alien alien=alienRepo.findById(aid).orElse(null);
+```
+- Now, **ModelAndView mv=new ModelAndView("showAlien.jsp");** is used for telling ModelAndView that this is the .jsp page where you have to send your mv. And what's the value of this "mv" it is "alien"
+```
+@RequestMapping("/getAlien")
+    public ModelAndView gettingAlien(@RequestParam int aid){
+
+        ModelAndView mv=new ModelAndView("showAlien.jsp");
+
+        Alien alien=alienRepo.findById(aid).orElse(null);
+        mv.addObject(alien);
+
+        return mv;
+    }
+```
+
+![fetch the data](https://github.com/anindameister/springBoot/blob/main/snaps/24.PNG)
+- Now, if attempt to **fetch the id which is non-existent then we get an error**, changing the code and checking now.
+- changed the line to below with changing to this **orElse(new Alien())**. 
+We are just returning a new object instead of null, which was giving an exception before. We can also create a fake object, return fake data and all that.
+
+
+```
+        Alien alien=alienRepo.findById(aid).orElse(new Alien());
+```
+- full code
+```
+@RequestMapping("/getAlien")
+    public ModelAndView gettingAlien(@RequestParam int aid){
+
+        ModelAndView mv=new ModelAndView("showAlien.jsp");
+
+        Alien alien=alienRepo.findById(aid).orElse(new Alien());
+        mv.addObject(alien);
+
+        return mv;
+    }
+```
+
+![no id available](https://github.com/anindameister/springBoot/blob/main/snaps/25.PNG)
+
+## Spring Boot Data JPA MVC H2 Query Methods Example Part 3
+
+1. **http://localhost:8080/getAlien** doesn't work as an individual website and instead this works, **http://localhost:8080/getAlien?aid=106**.. Attempted to remove the form part for getALlien within jsp and relaunch the app, just to find that even now, the same thing persists.
+
+2.Attempted to change the Alien.java file.. Attempts were made to add another private attribute called tech. Corresponding getters&setters, toString() were also added. Code's current structure can be well thought of, right now.
+
+3. It seemed that the database didn't contain the previous data any longer after an attempt was made to change the Alien.java file, not 100% sure though
+
+![database status](https://github.com/anindameister/springBoot/blob/main/snaps/26.PNG)
+
+- from the above snap, we see that 107 doesn't exist and we tried to search for the same and got the below
+
+![null value thingy not messed within the code but getting null results](https://github.com/anindameister/springBoot/blob/main/snaps/27.PNG)
+
+4. **alienRepo.save(alien);** is saving to database temporarily or not, got to check. Yes, it is not saving with any sort of permanence.Yes, it wasn't. Thank God, for getting recalled and sticking to that recallment, which I dont do generally. ANyway, I have got to save it in data.sql file,
+```
+insert into alien values(101,'Aninda','Python and Java')
+insert into alien values(102,'Arunava','Python')
+insert into alien values(103,'Rohith','Python')
+insert into alien values(104,'Dayanath Dharmalingam','Java')
+insert into alien values(105,'Poulomi Nandy','Java')
+insert into alien values(106,'Jonathan Mallet','Python and Java')
+insert into alien values(106,'Sri Kalindi','Java and Python')
+insert into alien values(107,'Dr. Kalpana Maulik','Parasytology')
+```
+5. **to note that the single entries such as Parasytology and 'Java and Python' are not coming up**This problem came up because if we look up 106 is assiged for both JonathanMaller and Sri and that's wrong, so anything after that wasn't coming up. Got that fixed and now out final output is after point 8 in this section.
+
+6. Addition in AlienController.java
+```
+@RequestMapping("/getAlien")
+    public ModelAndView gettingAlien(@RequestParam int aid){
+
+        ModelAndView mv=new ModelAndView("showAlien.jsp");
+
+        Alien alien=alienRepo.findById(aid).orElse(new Alien());
+
+        System.out.println(alienRepo.findByTech("Java"));
+        System.out.println(alienRepo.findByTech("Python and Java"));
+        System.out.println(alienRepo.findByTech("Java and Python"));
+        System.out.println(alienRepo.findByTech("Parasytology"));
+
+        mv.addObject(alien);
+
+        return mv;
+    }
+```
+7. Corresponding addition in Alienrepo.java
+```
+package com.emse.spring.faircorpagain.telusko.dao;
+
+import com.emse.spring.faircorpagain.telusko.model.Alien;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
+
+public interface AlienRepo extends CrudRepository<Alien, Integer> {
+
+    List<Alien> findByTech(String tech);
+}
+```
+8. Output as of right now,in the Java console
+```
+[Alien{aid=104, aname='Dayanath Dharmalingam', tech='Java'}, Alien{aid=105, aname='Poulomi Nandy', tech='Java'}]
+[Alien{aid=101, aname='Aninda', tech='Python and Java'}, Alien{aid=106, aname='Jonathan Mallet', tech='Python and Java'}]
+[]
+[]
+```
+- The above problem was caused by wrong entry in data.sql
+9. Addition to AlienRepo.java
+```
+List<Alien> findByAidGreaterThan(int aid);
+```
+- we got to remember that **findByAidGreaterThan** is exactly based on convention and the beauty of Spring Boot is that, it came up automatically.
+- 10. Based on this section's work, the new additions in AlienController.java
+```
+System.out.println(alienRepo.findByTech("Java"));
+        System.out.println(alienRepo.findByTech("Python and Java"));
+        System.out.println(alienRepo.findByTech("Java and Python"));
+        System.out.println(alienRepo.findByTech("Parasytology"));
+
+        System.out.println(alienRepo.findByAidGreaterThan(102));
+```
+11. Output
+```
+[Alien{aid=104, aname='Dayanath Dharmalingam', tech='Java'}, Alien{aid=105, aname='Poulomi Nandy', tech='Java'}]
+[Alien{aid=101, aname='Aninda', tech='Python and Java'}, Alien{aid=106, aname='Jonathan Mallet', tech='Python and Java'}]
+[Alien{aid=107, aname='Sri Kalindi', tech='Java and Python'}]
+[Alien{aid=108, aname='Dr. Kalpana Maulik', tech='Parasytology'}]
+[Alien{aid=103, aname='Rohith', tech='Python'}, Alien{aid=104, aname='Dayanath Dharmalingam', tech='Java'}, Alien{aid=105, aname='Poulomi Nandy', tech='Java'}, Alien{aid=106, aname='Jonathan Mallet', tech='Python and Java'}, Alien{aid=107, aname='Sri Kalindi', tech='Java and Python'}, Alien{aid=108, aname='Dr. Kalpana Maulik', tech='Parasytology'}]
+```
+12. Creating our own methods and in order to do that, we have to write the query as well.
+```
+ @Query("from Alien where tech=?1 order by aname")
+```
+- so the above is JPQL query since we are working with JPA. JPQL is almost same as HQL and that is similar to SQL, with some changes. 
+- sql
+```
+Select * from table
+```
+- JPQl, because "select *" is the boiler plate code and we dont need that.
+```
+from table
+```
+- complete JPQL query attempting1
+```
+from Alien where tech=?1
+```
+- ? is used because the value is coming from the user
+- in JPQL we use ?1, which means the number of question marks
+```
+from Alien where tech=?1 order by aname
+```
+- **order by aname** because we wanna sort based on the name
+13. Addition to the AlienRepo.java
+```
+        System.out.println(alienRepo.findByTechSorted("Java"));
+```
+14. output
+```
+[Alien{aid=104, aname='Dayanath Dharmalingam', tech='Java'}, Alien{aid=105, aname='Poulomi Nandy', tech='Java'}]
+```
+
 
 

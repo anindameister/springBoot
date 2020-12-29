@@ -38,6 +38,13 @@
     <li>"name" what we are seeing is the accepting parameter. This keyName needs to match the keyName such as "?name" coming from the client</li></ul>
 <li>@Entity-table name AND @Id- table column header</li>
     <ul><li>This is done within the java class under the model package</li></ul>
+<li>@RequestParam is used to fetch data from client</li>
+<ul><li>@RequestParam was previously used as a part of ModelAndView</li>
+    <li>Now, Telusko brought the same @RequestParam without talking about ModelANdView, though me mentioned the same later</li></ul>
+
+<li>@Query("from Alien where tech=?1 order by aname")</li>
+    <ul><li>This is used in order to create your own method in order to do advanced CRUD operations</li>
+    <li>This is a JPQL query written as the body of the annotation</li></ul>
 
 
 </ol>

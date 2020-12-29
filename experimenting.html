@@ -45,6 +45,11 @@
 <li>@Query("from Alien where tech=?1 order by aname")</li>
     <ul><li>This is used in order to create your own method in order to do advanced CRUD operations</li>
     <li>This is a JPQL query written as the body of the annotation</li></ul>
+<li>@RestController if used in place of @Controller then we dont need to use @ResponseBody, just to say that we are not returning JSP</li>
+    <li>@PostMapping is used for Post</li>
+    <li>@GetMapping can be used in place of @RequestMapping</li>
+<li>@RequestBody is used to accept Post request as raw data</li>
+    <li>Here, since we are accepting from the url directly, we are using @PathVariable("aid") int aid</li>
 
 
 </ol>

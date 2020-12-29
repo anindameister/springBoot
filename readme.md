@@ -1733,3 +1733,103 @@ gradlew --continuous bootRun
     }
 ```
 - the code works for **gradlew --continuous bootRun** and not for the Spring Boot. **I need to find out what was done to fix the problem of jsp and this would be done later**
+
+## Spring Boot MVC REST Post Example Part 8
+
+- created a method like below,
+```
+@PostMapping("/getAliensJpa")
+    @ResponseBody
+    public Alien postingAllAliensFromRESTJpaRepo(Alien alien){
+
+        return alien;
+    }
+```
+- so in the above, we accept and then return the same. **Please note that, though it shows up in the postman, but in the h2 temporary database, it is not saved. We should save with alienRepo.save(alien);**
+- Modified code
+```
+@PostMapping("/getAliensJpa")
+    @ResponseBody
+    public Alien postingAllAliensFromRESTJpaRepo(Alien alien){
+        
+        alienRepo.save(alien);
+
+        return alien;
+    }
+```
+- for the below input from **Params** we have the above code and below is the Postman situation now.
+- Post request using Params of Postman
+
+![Post request using Params of Postman](https://github.com/anindameister/springBoot/blob/main/snaps/38.PNG)
+
+<li>@RestController if used in place of @Controller then we dont need to use @ResponseBody, just to say that we are not returning JSP</li>
+    <li>@PostMapping is used for Post</li>
+    <li>@GetMapping can be used in place of @RequestMapping</li>
+
+- Now, to send raw data like Traversy style, who didn't show the Param part, we have the below method
+```
+    @PostMapping("/getAliensJpaNotParamsButRAW")
+    @ResponseBody
+    public Alien postingAllAliensFromRESTJpaRepoNotParamsButRAW(@RequestBody Alien alien){
+
+        alienRepo.save(alien);
+
+        return alien;
+    }
+
+}
+```
+- note that **@PostMapping("/getAliensJpaNotParamsButRAW")** is a new one. Please understand the @Post can't accept stupidity and negligence, that's it.
+<li>@RequestBody is used to accept Post request as raw data</li>
+
+- now recall the below in case of GET request where we were trying to restrict to just xml
+```
+@RequestMapping(path="/getAliensJpa",produces = {"application/xml"})
+```
+- in case of Post request, **@RestController** would have **consume** restriction
+```
+@PostMapping(path="/getAliensJpaNotParamsButRAW", consumes="{"application/json"})
+```
+## Spring Boot MVC REST PUT DELETE Example Part 9
+
+```
+@DeleteMapping("/getAliensJpaNotParamsButRAW{aid}")
+    @ResponseBody
+    public String deletingAlienFromRESTJpaRepoNotParamsButRAW(@PathVariable("aid") int aid){
+
+        Alien a=alienRepoJpaCrud.getOne(aid);
+        
+        alienRepoJpaCrud.delete(a);
+
+        return "deleted";
+    }
+```
+1. Please note that in the above code for Post, we have used **alienRepo instead of alienRepoJpaCrud** 
+2. We were trying to GET based on id and that is what we are trying to do, almost, for delete; **deleting based on id**
+3. We are creating a new object **a** for Alien, could be investigated later.
+4. So we chose the Delete option in the postman and did this, http://localhost:8080/getAliensJpaNotParamsButRAW/107 and it worked, we got the message "deleted"
+5. Upon checking data.sql, it is still there, but in the h2 database, it is not there. Check below snap
+
+![delete of Rest](https://github.com/anindameister/springBoot/blob/main/snaps/39.PNG)
+
+- Now, PUT is exactly like Post with noticeable changes
+```
+@PutMapping("/getAliensJpaNotParamsButRAW")
+    @ResponseBody
+    public Alien putAliensFromRESTJpaRepoNotParamsButRAW(@RequestBody Alien alien){
+
+        alienRepo.save(alien);
+
+        return alien;
+    }
+
+```
+- **note that the urls of REST services are same**
+
+![Put](https://github.com/anindameister/springBoot/blob/main/snaps/40.PNG)
+
+- database situation is below
+
+![database situation](https://github.com/anindameister/springBoot/blob/main/snaps/41.PNG)
+
+## Spring Boot Data REST Example

@@ -1691,3 +1691,45 @@ List<Alien>
 ![return individual alien in json](https://github.com/anindameister/springBoot/blob/main/snaps/33.PNG)
 
 ## Postman Spring Boot Data Jpa MVC H2 REST Example Part 6
+
+- How to use a postman and how to download it. 
+
+## Content Negotiation Spring boot Data JPA MVC H2 REST Example Part 7
+
+- if we are creating webservices, it's advisable to support both json and xml
+- let's find out if postman is able to fetch json or not, indeed it is
+
+![postman getting json](https://github.com/anindameister/springBoot/blob/main/snaps/34.PNG)
+
+- now, by default, Spring Boot doesn't support xml. Let's just verify that, because who knows gradle might come pre-installed. Postman is not getting xml
+- below is the way to ask for xml
+
+![postman contentNegotiating xml](https://github.com/anindameister/springBoot/blob/main/snaps/35.PNG)
+
+- it is getting **406 Not Acceptable**
+- now, we go to mvnrepository.com and search for **jackson dataformat xml** and match the version with our jackson version. We have 2.11.3 and luckily that's a highly downloaded file
+
+```
+// https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
+compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.11.3'
+```
+- we just paste the code in the build.gradle and do 
+```
+gradlew --continuous bootRun
+```
+- this does the required download and configuration of the dependency and switches on the server
+- finally we have the below in postman
+
+![postman contentNegotiating xml](https://github.com/anindameister/springBoot/blob/main/snaps/36.PNG)
+
+- So, initially Spring Boot supported json and not xml.We will now attempt to restrict json for one of them
+- code with changes
+```
+    @RequestMapping(path="/getAliensJpa",produces = {"application/xml"})
+    @ResponseBody
+    public List<Alien> gettingAllAliensFromRESTJpaRepo(){
+
+        return alienRepoJpaCrud.findAll();
+    }
+```
+- the code works for **gradlew --continuous bootRun** and not for the Spring Boot. **I need to find out what was done to fix the problem of jsp and this would be done later**

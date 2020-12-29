@@ -1562,5 +1562,64 @@ from Alien where tech=?1 order by aname
 [Alien{aid=104, aname='Dayanath Dharmalingam', tech='Java'}, Alien{aid=105, aname='Poulomi Nandy', tech='Java'}]
 ```
 
+## Spring Boot Data JPA MVC H2 REST Example 4
 
+- Situation till now is **http://localhost:8080/getAlien?aid=102**
+- In regards to REST, we should get **http://localhost:8080/getAliens/102**
+- in any case, we cannot post passwords, where password would show up in the url itself, hence it is very important to use REST
+- Now, this is our goal http://localhost:8080/getAliens/102, we have already chosen "getAlien" and we would create a separate method for it.
+1. we are gonna **prepare the api** from where the Controller would accept client's request
+```
+@RequestMapping("/getAlien/{id}")
+```
+2.The Controller would be returning a plain text as response, so we need to mention explicitly that **Dude!Dont look for .jsp response, expect a complete plain text response. This could be told by @ResponseBody**
+![@ResponseBody](https://github.com/anindameister/springBoot/blob/main/snaps/28.PNG)
+- Adding code now
+```
+@RequestMapping("/getAlien/{aid}")
+@ResponseBody
+```
+3.Okay, now the Controller has accepted the request coming from "/getAlien/{id}". The Controller has also set the right expectation of what to expect in terms of .jsp page or text. Now, this Controller also need to exactly get the id for which the client needs the information. Something regarding Django came to my mind, but there's no url chopping etusa.
+- to return plain text/String, that's mentioned in the returning type 
+```
+    @RequestMapping("/getAlien/{aid}")
 
+    public String gettingAlienFromREST(@PathVariable("aid") int aid){
+```
+- So, the method that we are creating accepts a parameter aid with the help of @RequestParam int aid.. We have an observation that the acceptance is either through single handling or object handling. **Single handling is done by  @RequestParam**.. **BUT in here, we are accepting the data directly from the api/url. Moreover is @RequestParam is associated to ModelAndView. Here, since we are accepting from the url directly, we are using @PathVariable("aid") int aid**
+- Moving on, we are attempting to return a string but **return alienRepo.findById(aid)** is giving an error because **findById** method is an iterable.
+**iterable is an object that can be looped over. e.g. list , string , tuple etc.**
+So we are transforming the return to string
+- current code status
+```
+@RequestMapping("/getAlien/{aid}")
+@ResponseBody
+    public String gettingAlienFromREST(@PathVariable("aid") int aid){
+
+        return alienRepo.findById(aid).toString();
+    }
+```
+- output
+
+![getting individual aliens](https://github.com/anindameister/springBoot/blob/main/snaps/29.PNG)
+
+- http://localhost:8080/getAlien/102 works as well
+
+4. Above output headline says getting individual aliens and question is that, what if we try to get all aliens
+- two changes have been made
+- 1. created a new method
+- 2. all the parameters removed
+- 3. new method of that interface used **findAll()**
+
+- working code
+```
+@RequestMapping("/getAliens")
+    @ResponseBody
+    public String gettingAllAliensFromREST(){
+
+        return alienRepo.findAll().toString();
+    }
+```
+- output
+
+![getting all aliens](https://github.com/anindameister/springBoot/blob/main/snaps/30.PNG)
